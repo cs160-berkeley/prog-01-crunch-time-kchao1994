@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
     private static HashMap<String, Double> exercises;
@@ -30,82 +31,62 @@ public class MainActivity extends AppCompatActivity {
         final EditText caloriesBurnedDisplay = (EditText) findViewById(R.id.editText2);
         final Spinner spinner1 = (Spinner) findViewById(R.id.spinner);
         final Button updateButton = (Button) findViewById(R.id.button);
-        final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+        final EditText equivalences = (EditText) findViewById(R.id.editText3);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         /* Populate exercise hashmap */
         exercises = new HashMap<String, Double>();
         exercises.put("Pushups (reps)", 100.0 / 350.0);
         exercises.put("Situps (reps)", 100.0 / 200.0);
+        exercises.put("Squats (reps)", 100.0 / 225.0);
+        exercises.put("Leg-lifts (minutes)", 100.0 / 25.0);
+        exercises.put("Planks (minutes)", 100.0 / 25.0);
         exercises.put("Jumping Jacks (minutes)", 100.0 / 10.0);
+        exercises.put("Pullups (Reps)", 1.0);
+        exercises.put("Cycling (minutes)", 100.0/12.0);
+        exercises.put("Walking (minutes)", 100.0/20.0);
         exercises.put("Jogging (minutes)", 100.0 / 12.0);
+        exercises.put("Swimming (minutes)", 100.0 / 13.0);
+        exercises.put("Stair Climbing (minutes)", 100.0 / 15.0);
 
         ArrayList<String> exerciseStrings = new ArrayList<String>(exercises.keySet());
         ArrayAdapter<String> exerciseAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exerciseStrings);
         exerciseAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(exerciseAdaptor);
 
-        final ArrayList<String> numRepsPerCalorieArray = new ArrayList<>();
-        ArrayAdapter<String> exerciseAdaptor2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, numRepsPerCalorieArray);
-        exerciseAdaptor2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(exerciseAdaptor2);
-
+        caloriesBurnedDisplay.setText("0");
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                equivalences.setText("");
+
                 if(isEmpty(numRepsInput)) {
                     caloriesBurnedDisplay.setText("0");
                     return;
                 }
 
-                Double numCaloriesPerRep = exercises.get(spinner1.getSelectedItem());
+                String selectedExercise = (String) spinner1.getSelectedItem();
+                Double numCaloriesPerRep = exercises.get(selectedExercise);
                 Double numReps = Double.parseDouble(numRepsInput.getText().toString());
                 Double numCaloriesBurned = numCaloriesPerRep * numReps;
                 caloriesBurnedDisplay.setText(String.valueOf(numCaloriesPerRep * numReps));
 
-                Double equivalentRepsFromCalories = (1.0 / exercises.get(spinner1.getSelectedItem())) * numCaloriesBurned;
-                numRepsPerCalorieArray.add(String.valueOf(equivalentRepsFromCalories) + " " + spinner1.getSelectedItem());
+                /* calculate equivalencies */
 
-
-            }
-        });
-
-/*
-        numRepsInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                return;
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                return;
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(isEmpty(numRepsInput)) {
-                    caloriesBurnedDisplay.setText("0");
-                    return;
+                Iterator it = exercises.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pair = (HashMap.Entry) it.next();
+                    String currentExercise = (String) pair.getKey();
+                    if(!currentExercise.equals(selectedExercise)) {
+                        Double equivalentRepsFromCalories = (1.0 / ((Double) pair.getValue())) * numCaloriesBurned;
+                        equivalences.append(String.format("%.1f", equivalentRepsFromCalories) + " " + currentExercise + "\n");
+                    }
                 }
 
-                Double numCaloriesPerRep = exercises.get(spinner1.getSelectedItem());
-                Double numReps = Double.parseDouble(numRepsInput.getText().toString());
-                String numCaloriesBurned = String.valueOf(numCaloriesPerRep * numReps);
-                caloriesBurnedDisplay.setText(numCaloriesBurned);
             }
-
         });
-*/
+
     }
 
     @Override

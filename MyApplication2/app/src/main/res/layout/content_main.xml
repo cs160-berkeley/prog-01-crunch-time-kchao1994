@@ -32,45 +32,8 @@
         android:hint="number/duration"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
-
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:layout_marginTop="3dp"
-        android:id="@+id/radioGroup"
-        android:checkedButton="@+id/radioButton"
-        android:contextClickable="false"
-        android:layout_alignParentStart="false"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-
-        <RadioButton
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="reps"
-            android:id="@+id/radioButton"
-            android:checked="false"
-            android:layout_marginEnd="51dp"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/radioButton2"
-            android:layout_gravity="center_horizontal" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="minutes"
-            android:id="@+id/radioButton2"
-            android:checked="false"
-            android:layout_marginLeft="75dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="84dp"
-            android:layout_gravity="center_horizontal" />
-    </RadioGroup>
-
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal" />
 
 
     <Spinner
@@ -109,7 +72,9 @@
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:focusableInTouchMode="false"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -136,9 +101,14 @@
         android:text="This is equivalent to..."
         android:id="@+id/textView5" />
 
-    <Spinner
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2" />
+        android:id="@+id/editText3"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@android:color/transparent" />
 
 </LinearLayout>
